@@ -2,8 +2,8 @@ import time
 
 import requests
 from celery import Celery
-from crud import crud_add_user, crud_add_weather
-from schemas import UserIn, WeatherIn
+from crud import crud_add_user, crud_add_transaction
+from schemas import UserIn, TransactionIn
 
 app = Celery(
     "tasks",
@@ -31,8 +31,8 @@ def task_add_user(count: int, delay: int):
 
 
 @app.task
-def task_add_weather(city: str, delay: int):
-    url = "https://api.collectapi.com/weather/getWeather?data.lang=tr&data.city="
+def task_add_transaction(city: str, delay: int):
+    url = "https://api.collectapi.com/transaction/getTransaction?data.lang=tr&data.city="
     headers = {
         "content-type": "application/json",
         "authorization": "apikey 4HKS8SXTYAsGz45l4yIo9P:0NVczbcuJfjQb8PW7hQV48",
@@ -41,13 +41,13 @@ def task_add_weather(city: str, delay: int):
     time.sleep(delay)
     result = []
     for item in response:
-        weather = WeatherIn(
+        transaction = TransactionIn(
             city=city.lower(),
             date=item["date"],
             day=item["day"],
             description=item["description"],
             degree=item["degree"],
         )
-        if crud_add_weather(weather):
-            result.append(weather.dict())
+        if crud_add_transaction(transaction):
+            result.append(transaction.dict())
     return {"success": result}

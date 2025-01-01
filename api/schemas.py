@@ -13,7 +13,7 @@ class UserOut(BaseModel):
     last_name: str
 
 
-class WeatherIn(BaseModel):
+class TransactionIn(BaseModel):
     city: str
     date: str
     day: str
@@ -21,7 +21,7 @@ class WeatherIn(BaseModel):
     degree: float
 
 
-class WeatherOut(BaseModel):
+class TransactionOut(BaseModel):
     date: str
     day: str
     description: str

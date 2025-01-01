@@ -11,8 +11,8 @@ class User(Base):
     age = Column("age", Integer)
 
 
-class Weather(Base):
-    __tablename__ = "Weather"
+class Transaction(Base):
+    __tablename__ = "Transaction"
     id = Column("id", Integer, primary_key=True, autoincrement=True)
     city = Column("city", String, index=True)
     date = Column("date", String)

@@ -1,9 +1,9 @@
 from celery.result import AsyncResult
-from crud import crud_error_message, crud_get_user, crud_get_weather
+from crud import crud_error_message, crud_get_user, crud_get_transaction
 from database import engine
 from fastapi import FastAPI, HTTPException
 from models import Base
-from tasks import task_add_user, task_add_weather
+from tasks import task_add_user, task_add_transaction
 
 Base.metadata.create_all(bind=engine)
 
@@ -51,38 +51,38 @@ def get_user(user_id: int):
         raise HTTPException(404, crud_error_message(f"No user found for id: {user_id}"))
 
 
-@app.post("/weathers/{city}/{delay}", status_code=201)
-def add_weather(city: str, delay: int):
+@app.post("/transactions/{city}/{delay}", status_code=201)
+def add_transaction(city: str, delay: int):
     """
-    Get weather data from api.collectapi.com/weather
+    Get transaction data from api.collectapi.com/transaction
     and add database using Celery. Uses Redis as Broker
     and Postgres as Backend.
     """
-    task = task_add_weather.delay(city, delay)
+    task = task_add_transaction.delay(city, delay)
     return {"task_id": task.id}
 
 
-@app.post("/weathers/{city}", status_code=201)
-def add_weather_default_delay(city: str):
+@app.post("/transactions/{city}", status_code=201)
+def add_transaction_default_delay(city: str):
     """
-    Get weather data from api.collectapi.com/weather
+    Get transaction data from api.collectapi.com/transaction
     and add database using Celery. Uses Redis as Broker
     and Postgres as Backend. (Delay = 10 sec)
     """
-    return add_weather(city, 10)
+    return add_transaction(city, 10)
 
 
-@app.get("/weathers/{city}")
-def get_weather(city: str):
+@app.get("/transactions/{city}")
+def get_transaction(city: str):
     """
-    Get weather from database.
+    Get transaction from database.
     """
-    weather = crud_get_weather(city.lower())
-    if weather:
-        return weather
+    transaction = crud_get_transaction(city.lower())
+    if transaction:
+        return transaction
     else:
         raise HTTPException(
-            404, crud_error_message(f"No weather found for city: {city}")
+            404, crud_error_message(f"No transaction found for city: {city}")
         )
 
 

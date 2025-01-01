@@ -21,9 +21,9 @@ This is simple REST API project using a modern stack with **[FastAPI](https://fa
 | /users/{count}           | Get random user data from randomuser.me/api and add database using Celery. (Delay = 10 sec) | `POST` |
 | /users/{count}/{delay}   | Get random user data from randomuser.me/api and add database using Celery.                  | `POST` |
 | /users/{user\_id}        | Get user from database.                                                                             | `GET`  |
-| /weathers/{city}         | Get weather data from api.collectapi.com/weather and add database using Celery. (Delay = 10 sec)    | `POST` |
-| /weathers/{city}/{delay} | Get weather data from api.collectapi.com/weather and add database using Celery.                     | `POST` |
-| /weathers/{city}         | Get weather from database.                                                                          | `GET`  |
+| /transactions/{city}         | Get transaction data from api.collectapi.com/transaction and add database using Celery. (Delay = 10 sec)    | `POST` |
+| /transactions/{city}/{delay} | Get transaction data from api.collectapi.com/transaction and add database using Celery.                     | `POST` |
+| /transactions/{city}         | Get transaction from database.                                                                          | `GET`  |
 | /tasks/{task\_id}        | Get task status.                                                                                    | `GET`  |
 
 ---
@@ -72,7 +72,7 @@ GET /users/5
 
 #### Request:
 ```http request
-POST /weathers/erzincan
+POST /transactions/erzincan
 ```
 
 #### Response:
@@ -86,7 +86,7 @@ POST /weathers/erzincan
 
 #### Request:
 ```http request
-GET /weathers/erzincan
+GET /transactions/erzincan
 ```
 
 #### Response:

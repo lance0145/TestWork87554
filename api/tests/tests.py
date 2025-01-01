@@ -26,8 +26,8 @@ def test_task_add_user():
     assert content == {"state": "SUCCESS"}
 
 
-def test_task_add_weather():
-    response = client.post("/weathers/erzincan")
+def test_task_add_transaction():
+    response = client.post("/transactions/erzincan")
     content = response.json()
     task_id = content["task_id"]
     assert task_id

@@ -1,6 +1,6 @@
 from database import db_context
-from models import User, Weather
-from schemas import UserIn, UserOut, WeatherIn, WeatherOut
+from models import User, Transaction
+from schemas import UserIn, UserOut, TransactionIn, TransactionOut
 
 
 def crud_add_user(user: UserIn):
@@ -20,35 +20,35 @@ def crud_get_user(user_id: int):
     return None
 
 
-def crud_add_weather(weather: WeatherIn):
-    db_weather = Weather(**weather.dict())
+def crud_add_transaction(transaction: TransactionIn):
+    db_transaction = Transaction(**transaction.dict())
     with db_context() as db:
         exist = (
-            db.query(Weather)
-            .filter(Weather.city == weather.city, Weather.date == weather.date)
+            db.query(Transaction)
+            .filter(Transaction.city == transaction.city, Transaction.date == transaction.date)
             .first()
         )
         if exist:
             return None
-        db.add(db_weather)
+        db.add(db_transaction)
         db.commit()
-        db.refresh(db_weather)
-    return db_weather
+        db.refresh(db_transaction)
+    return db_transaction
 
 
-def crud_get_weather(city: str):
+def crud_get_transaction(city: str):
     with db_context() as db:
-        weather = (
-            db.query(Weather)
-            .filter(Weather.city == city)
-            .order_by(Weather.date.desc())
+        transaction = (
+            db.query(Transaction)
+            .filter(Transaction.city == city)
+            .order_by(Transaction.date.desc())
             .limit(7)
             .all()
         )
-    if weather:
+    if transaction:
         result = []
-        for item in weather:
-            result.append(WeatherOut(**item.__dict__))
+        for item in transaction:
+            result.append(TransactionOut(**item.__dict__))
         return {city: result[::-1]}
     return None
 
